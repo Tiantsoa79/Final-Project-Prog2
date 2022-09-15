@@ -1,8 +1,0 @@
-school/hei/news/heinews/HeiNewsApplication.class
-school/hei/news/heinews/service/StudentService.class
-school/hei/news/heinews/model/Course.class
-school/hei/news/heinews/controller/CourseController.class
-school/hei/news/heinews/repository/CourseRepository.class
-school/hei/news/heinews/repository/StudentRepository.class
-school/hei/news/heinews/service/CourseService.class
-school/hei/news/heinews/model/Student.class
