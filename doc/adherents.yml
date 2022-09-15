@@ -14,7 +14,7 @@ externalDocs:
   url: http://swagger.io
 tags:
 - name: "Courses"
-- name: "Students"
+- name: "Student"
 paths:
      
   /courses:
