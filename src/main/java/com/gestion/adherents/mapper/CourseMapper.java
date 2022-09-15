@@ -1,7 +1,7 @@
 package com.gestion.adherents.mapper;
 
 
-import java.util.List;
+import java.util.Set;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,5 +15,5 @@ public class CourseMapper {
 
     private String teacher;
 
-    private List<StudentMapper> adherents;
+    private Set<StudentMapper> adherents;
 }

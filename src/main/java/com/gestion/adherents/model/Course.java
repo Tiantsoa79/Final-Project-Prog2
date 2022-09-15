@@ -1,10 +1,12 @@
 package com.gestion.adherents.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 // Lombok
 @AllArgsConstructor
@@ -18,18 +20,27 @@ import java.util.List;
 public class Course implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_course;
+    private Long id;
 
-    @Column(nullable = false)
+    @Column( unique = true)
     private String name;
 
     private String teacher;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JoinTable(name = "have",
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "adherent_course",
             joinColumns = {@JoinColumn(name = "course_id")},
             inverseJoinColumns = {@JoinColumn(name = "student_id")}
     )
-    private List<Student> adherents;
+    @JsonManagedReference
+    private Set<Student> adherents = new HashSet<>();
 
+    public void addAdherents(Student student) {
+        adherents.add(student);
+    }
+    public void removeAdherents(Student student) {
+        adherents.remove(student);
+    }
 }
+

@@ -14,5 +14,5 @@ public class StudentMapper {
 
     private String reference;
 
-    private String group;
+    private String groupProm;
 }

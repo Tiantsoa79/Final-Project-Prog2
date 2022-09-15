@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CourseService {
     
-    private CourseRepository courseRepository;
+    private final CourseRepository courseRepository;
     
     private StudentRepository studentRepository;
 
@@ -35,69 +35,12 @@ public class CourseService {
         return findAllCourse();
     }
     	
-    public Course findByCourseId(long id) {
+    public Course findByCourseId(Long id) {
     
-      return courseRepository.getById(id);
+      return courseRepository.findById(id).get();
     
     }
 
-    public void addStudent(long id, StudentMapper student) {
-        Student tmp = new Student();
-        tmp.setName(student.getName());
-        tmp.setReference(student.getReference());
-        tmp.setGroupProm(student.getGroup());
 
-        studentRepository.save(tmp);
-
-        List<Student> newList = new ArrayList<>();
-
-        for (Student adherent: courseRepository.getById(id).getAdherents()
-        ) {
-            newList.add(adherent);
-        }
-
-        newList.add(tmp);
-
-        courseRepository.getById(id).setAdherents(newList);
-    }
-
-    public void updateStudent(long id, long id_student, StudentMapper student) {
-
-        studentRepository.getById(id_student).setName(student.getName());
-
-        studentRepository.getById(id_student).setReference(student.getReference());
-
-        studentRepository.getById(id_student).setGroupProm(student.getGroup());
-
-        List<Student> newList = new ArrayList<>();
-
-        for (Student adherent: courseRepository.getById(id).getAdherents()
-        ) {
-            if(adherent.getIdStudent()!=id_student) {
-                newList.add(adherent);
-            }
-        }
-
-        newList.add(studentRepository.getById(id_student));
-
-        courseRepository.getById(id).setAdherents(newList);
-    }
-
-    public void deleteStudent(long id, long id_student) {
-
-
-        List<Student> newList = new ArrayList<>();
-
-        for (Student adherent: courseRepository.getById(id).getAdherents()
-        ){
-            if(adherent.getIdStudent()!=id_student) {
-                newList.add(adherent);
-            }
-        }
-
-        courseRepository.getById(id).setAdherents(newList);
-
-        studentRepository.deleteById(id_student);
-    }
 
 }

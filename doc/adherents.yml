@@ -1,0 +1,250 @@
+openapi: '3.0.2'
+info:
+  title: SDT21079
+  version: '1.0'
+  description: 'API for "Gestion des adherents aux cours particuliers"' 
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: hei.tiantsoa.4@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+tags:
+- name: "Courses"
+- name: "Students"
+paths:
+     
+  /courses:
+    get:
+      tags:
+        - Courses
+      summary: Get a list of courses
+      operationId: getCourses
+      responses:
+        200:
+          description: List Course
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "400_BAD_REQUEST"
+                  message:
+                    type: string
+                    example: "Parameter missing"
+    post:
+      tags:
+        - Courses
+      summary: Create new course
+      requestBody:
+        description: Course
+        content:
+          application/json:
+            schema:    
+                 $ref: '#/components/schemas/CreateCourse'
+      responses:
+        200:
+          description: course
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+        400:
+          description: Bad Request
+          content: {}
+    
+
+  /courses/{id_course}:
+    get:
+      tags:
+        - Courses
+      summary: Get a course by id and see all adherents
+      operationId: getCourseID
+      parameters:
+        - name: id_course
+          in: path
+          schema:
+            type: integer
+          required: true  
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+        400:
+          description: Bad Request
+          content: {}
+        404:
+          description: not found
+          content: {}   
+
+  /courses/{id_course}/student:
+    post:
+      tags:
+        - Student
+      summary: post an adherent in a course
+      operationId: addCourse
+      parameters:
+        - name: id_course
+          in: path
+          schema:
+            type: integer
+          required: true  
+      requestBody:
+        description: Course adherents to update
+        required: true
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/NewStudent'   
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+        400:
+          description: Bad Request
+          content: {}
+    
+             
+  /courses/{id_course}/student/{id_student}:
+    put:
+      tags:
+        - Student
+      summary: update an adherent in a course
+      operationId: updateCourse
+      parameters:
+        - name: id_course
+          in: path
+          schema:
+            type: integer
+          required: true
+        - name: id_student
+          in: query  
+          schema:
+            type: integer
+          required: true  
+      requestBody:
+        description: Course adherents to update
+        required: true
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/NewStudent'   
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+        400:
+          description: Bad Request
+          content: {}     
+        404:
+           description: not found
+           content: {}
+    delete:
+      tags:
+        - Student
+      summary: delete an adherent in a course
+      operationId: getCourseID
+      parameters:
+        - name: id_course
+          in: path
+          schema:
+            type: integer
+          required: true  
+        - name: id_student
+          in : path
+          schema:
+            type: integer
+          required: true 
+      responses:
+        200:
+          description: Success
+        400:
+          description: invalid ID
+          content: {}
+        404:
+          description: not found
+          content: {}           
+
+  
+    
+components:
+  schemas:
+    Students:
+      allOf:
+        - $ref: '#/components/schemas/NewStudent'
+      type: object
+      properties:
+         id_student:
+          type: integer
+          format: int64 
+    NewStudent:
+      type: object
+      properties:
+         name:
+          type: string
+         reference: 
+          type: string  
+         groupProm: 
+          type: string   
+    Course:
+      type: object
+      properties:
+        id_course:
+          type: integer
+          format: int64 
+      allOf:
+        - $ref: '#/components/schemas/NewCourse'
+    NewCourse:
+      type: object
+      properties:
+        name:
+          type: string
+        teacher:
+          type: string
+        adherents:
+          type: array
+          items :
+            $ref: '#/components/schemas/Students'
+    CreateStudent:
+       type: object
+       allOf:
+        - $ref: '#/components/schemas/NewStudent'
+    CreateCourse:
+      type: object
+      properties:
+        name:
+          type: string
+        teacher:
+          type: string
+        adherents:
+          type: array
+          items :
+            $ref: '#/components/schemas/CreateStudent' 
+            
+            
+
+     
